@@ -1,89 +1,427 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Welcome to Firebase Hosting</title>
-
-    <!-- update the version number as needed -->
-    <script defer src="/__/firebase/12.1.0/firebase-app-compat.js"></script>
-    <!-- include only the Firebase features as you need -->
-    <script defer src="/__/firebase/12.1.0/firebase-auth-compat.js"></script>
-    <script defer src="/__/firebase/12.1.0/firebase-database-compat.js"></script>
-    <script defer src="/__/firebase/12.1.0/firebase-firestore-compat.js"></script>
-    <script defer src="/__/firebase/12.1.0/firebase-functions-compat.js"></script>
-    <script defer src="/__/firebase/12.1.0/firebase-messaging-compat.js"></script>
-    <script defer src="/__/firebase/12.1.0/firebase-storage-compat.js"></script>
-    <script defer src="/__/firebase/12.1.0/firebase-analytics-compat.js"></script>
-    <script defer src="/__/firebase/12.1.0/firebase-remote-config-compat.js"></script>
-    <script defer src="/__/firebase/12.1.0/firebase-performance-compat.js"></script>
-    <!-- 
-      initialize the SDK after all desired features are loaded, set useEmulator to false
-      to avoid connecting the SDK to running emulators.
-    -->
-    <script defer src="/__/firebase/init.js?useEmulator=true"></script>
-
-    <style media="screen">
-      body { background: #ECEFF1; color: rgba(0,0,0,0.87); font-family: Roboto, Helvetica, Arial, sans-serif; margin: 0; padding: 0; }
-      #message { background: white; max-width: 360px; margin: 100px auto 16px; padding: 32px 24px; border-radius: 3px; }
-      #message h2 { color: #ffa100; font-weight: bold; font-size: 16px; margin: 0 0 8px; }
-      #message h1 { font-size: 22px; font-weight: 300; color: rgba(0,0,0,0.6); margin: 0 0 16px;}
-      #message p { line-height: 140%; margin: 16px 0 24px; font-size: 14px; }
-      #message a { display: block; text-align: center; background: #039be5; text-transform: uppercase; text-decoration: none; color: white; padding: 16px; border-radius: 4px; }
-      #message, #message a { box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24); }
-      #load { color: rgba(0,0,0,0.4); text-align: center; font-size: 13px; }
-      @media (max-width: 600px) {
-        body, #message { margin-top: 0; background: white; box-shadow: none; }
-        body { border-top: 16px solid #ffa100; }
-      }
-    </style>
-  </head>
-  <body>
-    <div id="message">
-      <h2>Welcome</h2>
-      <h1>Firebase Hosting Setup Complete</h1>
-      <p>You're seeing this because you've successfully setup Firebase Hosting. Now it's time to go build something extraordinary!</p>
-      <a target="_blank" href="https://firebase.google.com/docs/hosting/">Open Hosting Documentation</a>
-    </div>
-    <p id="load">Firebase SDK Loading&hellip;</p>
-
-    <script>
-      document.addEventListener('DOMContentLoaded', function() {
-        const loadEl = document.querySelector('#load');
-        // // 🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥
-        // // The Firebase SDK is initialized and available here!
-        //
-        // firebase.auth().onAuthStateChanged(user => { });
-        // firebase.database().ref('/path/to/ref').on('value', snapshot => { });
-        // firebase.firestore().doc('/foo/bar').get().then(() => { });
-        // firebase.functions().httpsCallable('yourFunction')().then(() => { });
-        // firebase.messaging().requestPermission().then(() => { });
-        // firebase.storage().ref('/path/to/ref').getDownloadURL().then(() => { });
-        // firebase.analytics(); // call to activate
-        // firebase.analytics().logEvent('tutorial_completed');
-        // firebase.performance(); // call to activate
-        //
-        // // 🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥🔥
-
-        try {
-          let app = firebase.app();
-          let features = [
-            'auth', 
-            'database', 
-            'firestore',
-            'functions',
-            'messaging', 
-            'storage', 
-            'analytics', 
-            'remoteConfig',
-            'performance',
-          ].filter(feature => typeof app[feature] === 'function');
-          loadEl.textContent = `Firebase SDK loaded with ${features.join(', ')}`;
-        } catch (e) {
-          console.error(e);
-          loadEl.textContent = 'Error loading the Firebase SDK, check the console.';
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Sentinel - คลินิกทุเรียน</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Kanit', sans-serif;
         }
-      });
+        .view {
+            display: none;
+        }
+        .view.active {
+            display: block;
+        }
+        /* Spinner for loading state */
+        .loader {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #3498db;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+
+    <div class="container mx-auto max-w-4xl p-4">
+        
+        <!-- Header -->
+        <header class="text-center mb-8">
+            <h1 class="text-4xl font-bold text-green-800">Smart Sentinel คลินิกทุเรียน</h1>
+            <p id="header-subtitle" class="text-gray-600 mt-2">แพลตฟอร์มปรึกษาปัญหาสวนทุเรียนระหว่างเกษตรกรและผู้เชี่ยวชาญ</p>
+            <div id="user-info" class="hidden mt-2">
+                <span id="user-name" class="font-semibold"></span>
+                <button onclick="logout()" class="ml-2 text-sm text-red-500 hover:underline">(ออกจากระบบ)</button>
+            </div>
+        </header>
+
+        <!-- Loading View -->
+        <div id="loading-view" class="view active text-center p-10">
+            <div class="loader mx-auto"></div>
+            <p class="mt-4 text-gray-600">กำลังตรวจสอบการเข้าสู่ระบบ...</p>
+        </div>
+
+        <!-- Login View -->
+        <div id="login-view" class="view">
+            <div class="bg-white p-6 rounded-lg shadow-md max-w-md mx-auto">
+                <h2 class="text-2xl font-bold text-center text-gray-800 mb-6">เข้าสู่ระบบ / ลงทะเบียน</h2>
+                <div class="space-y-4">
+                    <button onclick="loginWithGoogle()" class="w-full flex items-center justify-center gap-3 bg-white border border-gray-300 text-gray-700 font-semibold py-3 px-6 rounded-lg hover:bg-gray-50 transition duration-300">
+                        <svg class="w-6 h-6" viewBox="0 0 48 48"><path fill="#4285F4" d="M24 9.5c3.14 0 5.5 1.36 7.27 3.02l5.66-5.66C33.05 3.16 29.05 1 24 1 14.7 1 7.1 6.84 4.13 14.87l6.53 5.03C12.2 14.47 17.58 9.5 24 9.5z"></path><path fill="#34A853" d="M46.14 24.5c0-1.63-.15-3.2-.42-4.68H24v8.88h12.44c-.54 2.87-2.1 5.33-4.6 7.02l6.5 5.01c3.8-3.5 6.08-8.67 6.08-14.23z"></path><path fill="#FBBC05" d="M10.66 29.9c-.6-1.8-.94-3.73-.94-5.74s.34-3.94.94-5.74l-6.53-5.03C1.55 17.13 0 20.8 0 24.16c0 3.36 1.55 7.03 4.13 9.89l6.53-5.15z"></path><path fill="#EA4335" d="M24 47c5.05 0 9.05-1.66 11.9-4.5l-6.5-5.01c-1.67 1.12-3.8 1.78-6.4 1.78-6.42 0-11.8-4.97-13.34-11.6H4.13C7.1 39.16 14.7 47 24 47z"></path><path fill="none" d="M0 0h48v48H0z"></path></svg>
+                        เข้าสู่ระบบด้วย Google
+                    </button>
+                    <button onclick="showView('verification-view')" class="w-full bg-green-600 text-white font-bold py-3 px-6 rounded-lg hover:bg-green-700 transition duration-300">
+                        ลงทะเบียนด้วยบัตรประชาชน
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Verification View (New) -->
+        <div id="verification-view" class="view">
+            <div class="bg-white p-6 rounded-lg shadow-md max-w-md mx-auto">
+                <h2 class="text-2xl font-bold text-center text-gray-800 mb-2">ยืนยันตัวตนเกษตรกร</h2>
+                <p class="text-center text-gray-500 mb-6">กรุณากรอกข้อมูลเพิ่มเติมเพื่อใช้งานระบบ</p>
+                <form id="verification-form">
+                    <div class="mb-4">
+                        <label for="full-name" class="block text-gray-700 font-semibold mb-2">ชื่อ-นามสกุล:</label>
+                        <input type="text" id="full-name" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500" required>
+                    </div>
+                    <div class="mb-4">
+                        <label for="national-id" class="block text-gray-700 font-semibold mb-2">เลขบัตรประชาชน 13 หลัก:</label>
+                        <input type="text" id="national-id" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500" placeholder="xxxxxxxxxxxxx" maxlength="13" required>
+                    </div>
+                    <button type="submit" class="w-full bg-green-600 text-white font-bold py-3 px-6 rounded-lg hover:bg-green-700 transition duration-300">ยืนยันและเริ่มใช้งาน</button>
+                    <p class="text-xs text-gray-500 mt-2 text-center">**ใช้เพื่อยืนยันตัวตนเกษตรกรเท่านั้น</p>
+                </form>
+            </div>
+        </div>
+
+        <!-- Farmer View -->
+        <div id="farmer-view" class="view">
+            <div class="bg-white p-6 rounded-lg shadow-md">
+                <h2 class="text-2xl font-bold text-gray-800 mb-4 border-b pb-2">ส่งคำถามถึงผู้เชี่ยวชาญ</h2>
+                <form id="question-form">
+                    <div class="mb-4">
+                        <label for="question-title" class="block text-gray-700 font-semibold mb-2">หัวข้อ / อาการที่พบ:</label>
+                        <input type="text" id="question-title" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500" placeholder="เช่น ใบเหลือง, รากเน่า, เพลี้ยไฟ" required>
+                    </div>
+                    <div class="mb-4">
+                        <label for="question-details" class="block text-gray-700 font-semibold mb-2">รายละเอียดคำถาม:</label>
+                        <textarea id="question-details" rows="4" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500" placeholder="อธิบายอาการที่พบ, สิ่งที่ได้ลองทำไปแล้ว, หรือคำถามที่ต้องการทราบ" required></textarea>
+                    </div>
+                    <div class="mb-4">
+                        <label for="question-image" class="block text-gray-700 font-semibold mb-2">แนบรูปภาพ (ถ้ามี):</label>
+                        <input type="file" id="question-image" class="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-green-50 file:text-green-700 hover:file:bg-green-100" accept="image/*">
+                        <img id="image-preview" class="mt-4 rounded-lg max-h-60 hidden" />
+                    </div>
+                    <button type="submit" id="submit-button" class="w-full bg-green-600 text-white font-bold py-3 px-6 rounded-lg hover:bg-green-700 transition duration-300 flex items-center justify-center">ส่งคำถาม</button>
+                </form>
+            </div>
+            <div class="mt-8">
+                <h3 class="text-2xl font-bold text-gray-800 mb-4">คำถามของคุณ</h3>
+                <div id="farmer-questions-list" class="space-y-4"></div>
+            </div>
+        </div>
+
+        <!-- Expert View -->
+        <div id="expert-view" class="view">
+            <h2 class="text-2xl font-bold text-gray-800 mb-4">คำถามที่รอคำตอบ</h2>
+            <div id="expert-questions-list" class="space-y-4"></div>
+        </div>
+    </div>
+
+    <!-- Firebase SDK -->
+    <script type="module">
+        // Import the functions you need from the SDKs you need
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+        import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+        import { getFirestore, doc, getDoc, setDoc, collection, addDoc, query, where, onSnapshot, serverTimestamp, orderBy, updateDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+        import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js";
+
+        // ==============================================================================
+        // PASTE YOUR FIREBASE CONFIG HERE
+        // ==============================================================================
+        const firebaseConfig = {
+            apiKey: "AIzaSyDJo5x4ywio0BLGXE058P9VvdjgBBBin3c",
+            authDomain: "smart-sentinel-app.firebaseapp.com",
+            projectId: "smart-sentinel-app",
+            storageBucket: "smart-sentinel-app.appspot.com",
+            messagingSenderId: "798720211723",
+            appId: "1:798720211723:web:e95508e49c499bc4d6c00e",
+            measurementId: "G-KDF5JW5BLK"
+        };
+        // ==============================================================================
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getFirestore(app);
+        const storage = getStorage(app);
+
+        // --- UI Elements ---
+        const allViews = document.querySelectorAll('.view');
+        const userInfoDiv = document.getElementById('user-info');
+        const userNameSpan = document.getElementById('user-name');
+        const headerSubtitle = document.getElementById('header-subtitle');
+        const questionForm = document.getElementById('question-form');
+        const imagePreview = document.getElementById('image-preview');
+        const questionImageInput = document.getElementById('question-image');
+        const submitButton = document.getElementById('submit-button');
+        const verificationForm = document.getElementById('verification-form');
+        
+        let currentUser = null;
+        let questionsUnsubscribe = null;
+
+        // --- Functions ---
+        function showView(viewId) {
+            allViews.forEach(v => v.classList.remove('active'));
+            const viewToShow = document.getElementById(viewId);
+            if (viewToShow) viewToShow.classList.add('active');
+        }
+
+        // --- Authentication ---
+        window.loginWithGoogle = async () => {
+            const provider = new GoogleAuthProvider();
+            try {
+                await signInWithPopup(auth, provider);
+            } catch (error) {
+                console.error("Error signing in with Google", error);
+                alert("เกิดข้อผิดพลาดในการเข้าสู่ระบบ: " + error.message);
+            }
+        };
+
+        window.logout = async () => {
+            await signOut(auth);
+        };
+
+        onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                currentUser = user;
+                const userDocRef = doc(db, "users", user.uid);
+                const userDocSnap = await getDoc(userDocRef);
+
+                if (!userDocSnap.exists() || !userDocSnap.data().nationalID) {
+                    // New user or existing user who hasn't verified
+                    document.getElementById('full-name').value = user.displayName || '';
+                    showView('verification-view');
+                } else {
+                    // Existing and verified user
+                    const userData = userDocSnap.data();
+                    onLoginSuccess(userData.displayName, userData.role);
+                }
+            } else {
+                // User is signed out
+                currentUser = null;
+                if(questionsUnsubscribe) questionsUnsubscribe();
+                onLogoutSuccess();
+            }
+        });
+
+        function onLoginSuccess(displayName, role) {
+            userNameSpan.textContent = `ยินดีต้อนรับ, ${displayName}`;
+            userInfoDiv.classList.remove('hidden');
+            headerSubtitle.classList.add('hidden');
+            
+            if (role === 'expert') {
+                showView('expert-view');
+                listenForExpertQuestions();
+            } else {
+                showView('farmer-view');
+                listenForFarmerQuestions();
+            }
+        }
+        
+        function onLogoutSuccess() {
+            userNameSpan.textContent = '';
+            userInfoDiv.classList.add('hidden');
+            headerSubtitle.classList.remove('hidden');
+            showView('login-view');
+        }
+
+        // --- Firestore Real-time Listeners ---
+        function listenForFarmerQuestions() {
+            if (!currentUser) return;
+            const q = query(collection(db, "questions"), where("askedBy", "==", currentUser.uid), orderBy("timestamp", "desc"));
+            questionsUnsubscribe = onSnapshot(q, (querySnapshot) => {
+                renderFarmerQuestions(querySnapshot.docs);
+            });
+        }
+
+        function listenForExpertQuestions() {
+            const q = query(collection(db, "questions"), where("answered", "==", false), orderBy("timestamp", "asc"));
+            questionsUnsubscribe = onSnapshot(q, (querySnapshot) => {
+                renderExpertQuestions(querySnapshot.docs);
+            });
+        }
+
+        // --- Rendering ---
+        function renderFarmerQuestions(docs) {
+            const list = document.getElementById('farmer-questions-list');
+            list.innerHTML = '';
+            if (docs.length === 0) {
+                list.innerHTML = '<p class="text-gray-500 text-center">ยังไม่มีคำถามที่ส่ง</p>';
+                return;
+            }
+            docs.forEach(doc => {
+                const q = doc.data();
+                const card = document.createElement('div');
+                card.className = 'bg-white p-4 rounded-lg shadow-md';
+                card.innerHTML = `
+                    <div class="flex justify-between items-start">
+                        <div>
+                            <h4 class="font-bold text-lg">${q.title}</h4>
+                            <p class="text-sm text-gray-500">ส่งเมื่อ: ${q.timestamp ? q.timestamp.toDate().toLocaleString('th-TH') : 'กำลังส่ง...'}</p>
+                        </div>
+                        <span class="text-sm font-semibold px-3 py-1 rounded-full ${q.answered ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'}">
+                            ${q.answered ? 'ได้รับคำตอบแล้ว' : 'รอคำตอบ'}
+                        </span>
+                    </div>
+                    <p class="mt-2 text-gray-700 whitespace-pre-wrap">${q.details}</p>
+                    ${q.imageUrl ? `<img src="${q.imageUrl}" class="mt-2 rounded-lg max-h-40">` : ''}
+                    ${q.answered ? `
+                        <div class="mt-4 bg-gray-50 p-3 rounded-lg border-l-4 border-green-500">
+                            <p class="font-semibold text-green-800">คำตอบจากผู้เชี่ยวชาญ:</p>
+                            <p class="text-gray-700 whitespace-pre-wrap">${q.answer.text}</p>
+                        </div>
+                    ` : ''}
+                `;
+                list.appendChild(card);
+            });
+        }
+        
+        function renderExpertQuestions(docs) {
+            const list = document.getElementById('expert-questions-list');
+            list.innerHTML = '';
+            if (docs.length === 0) {
+                list.innerHTML = '<p class="text-gray-500 text-center">ไม่มีคำถามที่รอคำตอบ</p>';
+                return;
+            }
+            docs.forEach(doc => {
+                const q = doc.data();
+                const card = document.createElement('div');
+                card.className = 'bg-white p-4 rounded-lg shadow-md';
+                card.innerHTML = `
+                    <h4 class="font-bold text-lg">${q.title}</h4>
+                    <p class="text-sm text-gray-500">ส่งเมื่อ: ${q.timestamp ? q.timestamp.toDate().toLocaleString('th-TH') : 'กำลังส่ง...'}</p>
+                    <p class="mt-2 text-gray-700 whitespace-pre-wrap">${q.details}</p>
+                    ${q.imageUrl ? `<img src="${q.imageUrl}" class="mt-2 rounded-lg max-h-60">` : ''}
+                    <div class="mt-4">
+                        <textarea id="answer-${doc.id}" rows="3" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="พิมพ์คำตอบที่นี่..."></textarea>
+                        <button onclick="window.submitAnswer('${doc.id}')" class="mt-2 w-full bg-blue-600 text-white font-bold py-2 px-4 rounded-lg hover:bg-blue-700 transition duration-300">ส่งคำตอบ</button>
+                    </div>
+                `;
+                list.appendChild(card);
+            });
+        }
+
+        // --- Actions ---
+        window.submitAnswer = async (questionId) => {
+            const answerText = document.getElementById(`answer-${questionId}`).value;
+            if (!answerText) {
+                alert('กรุณาพิมพ์คำตอบ');
+                return;
+            }
+            const questionDocRef = doc(db, "questions", questionId);
+            try {
+                await updateDoc(questionDocRef, {
+                    answered: true,
+                    answer: {
+                        text: answerText,
+                        answeredBy: currentUser.uid,
+                        answeredAt: serverTimestamp()
+                    }
+                });
+            } catch (error) {
+                console.error("Error submitting answer:", error);
+                alert("เกิดข้อผิดพลาดในการส่งคำตอบ");
+            }
+        };
+
+        verificationForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const fullName = document.getElementById('full-name').value;
+            const nationalId = document.getElementById('national-id').value;
+
+            if (nationalId.length !== 13 || !/^\d+$/.test(nationalId)) {
+                alert('กรุณากรอกเลขบัตรประชาชน 13 หลักให้ถูกต้อง');
+                return;
+            }
+            
+            // For users who logged in with Google first
+            const userToVerify = currentUser || auth.currentUser;
+            if (!userToVerify) {
+                 alert('เกิดข้อผิดพลาด: ไม่พบข้อมูลผู้ใช้ กรุณาลองเข้าสู่ระบบใหม่อีกครั้ง');
+                 logout();
+                 return;
+            }
+
+            const userDocRef = doc(db, "users", userToVerify.uid);
+            try {
+                await setDoc(userDocRef, {
+                    uid: userToVerify.uid,
+                    displayName: fullName,
+                    email: userToVerify.email, // Can be null if not from Google
+                    role: 'farmer', // Default role
+                    nationalID: nationalId,
+                    verifiedAt: serverTimestamp()
+                }, { merge: true });
+
+                onLoginSuccess(fullName, 'farmer');
+            } catch (error) {
+                console.error("Error saving verification data:", error);
+                alert("เกิดข้อผิดพลาดในการบันทึกข้อมูล");
+            }
+        });
+
+        questionForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            if (!currentUser) return;
+
+            submitButton.disabled = true;
+            submitButton.innerHTML = `<div class="loader" style="width: 24px; height: 24px; border-top-color: white;"></div>`;
+
+            const title = document.getElementById('question-title').value;
+            const details = document.getElementById('question-details').value;
+            const file = questionImageInput.files[0];
+            let imageUrl = null;
+
+            try {
+                if (file) {
+                    const storageRef = ref(storage, `questions/${currentUser.uid}/${Date.now()}_${file.name}`);
+                    const snapshot = await uploadBytes(storageRef, file);
+                    imageUrl = await getDownloadURL(snapshot.ref);
+                }
+
+                await addDoc(collection(db, "questions"), {
+                    title: title,
+                    details: details,
+                    imageUrl: imageUrl,
+                    askedBy: currentUser.uid,
+                    timestamp: serverTimestamp(),
+                    answered: false,
+                    answer: {}
+                });
+
+                questionForm.reset();
+                imagePreview.classList.add('hidden');
+
+            } catch (error) {
+                console.error("Error submitting question:", error);
+                alert("เกิดข้อผิดพลาดในการส่งคำถาม");
+            } finally {
+                submitButton.disabled = false;
+                submitButton.textContent = 'ส่งคำถาม';
+            }
+        });
+
+        questionImageInput.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = (event) => {
+                    imagePreview.src = event.target.result;
+                    imagePreview.classList.remove('hidden');
+                }
+                reader.readAsDataURL(file);
+            } else {
+                 imagePreview.classList.add('hidden');
+            }
+        });
+
     </script>
-  </body>
+</body>
 </html>
