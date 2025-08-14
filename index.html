@@ -57,10 +57,15 @@
         <div id="login-view" class="view">
             <div class="bg-white p-6 rounded-lg shadow-md max-w-md mx-auto">
                 <h2 class="text-2xl font-bold text-center text-gray-800 mb-6">เข้าสู่ระบบ / ลงทะเบียน</h2>
-                <button onclick="loginWithGoogle()" class="w-full flex items-center justify-center gap-3 bg-white border border-gray-300 text-gray-700 font-semibold py-3 px-6 rounded-lg hover:bg-gray-50 transition duration-300">
-                    <svg class="w-6 h-6" viewBox="0 0 48 48"><path fill="#4285F4" d="M24 9.5c3.14 0 5.5 1.36 7.27 3.02l5.66-5.66C33.05 3.16 29.05 1 24 1 14.7 1 7.1 6.84 4.13 14.87l6.53 5.03C12.2 14.47 17.58 9.5 24 9.5z"></path><path fill="#34A853" d="M46.14 24.5c0-1.63-.15-3.2-.42-4.68H24v8.88h12.44c-.54 2.87-2.1 5.33-4.6 7.02l6.5 5.01c3.8-3.5 6.08-8.67 6.08-14.23z"></path><path fill="#FBBC05" d="M10.66 29.9c-.6-1.8-.94-3.73-.94-5.74s.34-3.94.94-5.74l-6.53-5.03C1.55 17.13 0 20.8 0 24.16c0 3.36 1.55 7.03 4.13 9.89l6.53-5.15z"></path><path fill="#EA4335" d="M24 47c5.05 0 9.05-1.66 11.9-4.5l-6.5-5.01c-1.67 1.12-3.8 1.78-6.4 1.78-6.42 0-11.8-4.97-13.34-11.6H4.13C7.1 39.16 14.7 47 24 47z"></path><path fill="none" d="M0 0h48v48H0z"></path></svg>
-                    เข้าสู่ระบบด้วย Google
-                </button>
+                <div class="space-y-4">
+                    <button onclick="loginWithGoogle()" class="w-full flex items-center justify-center gap-3 bg-white border border-gray-300 text-gray-700 font-semibold py-3 px-6 rounded-lg hover:bg-gray-50 transition duration-300">
+                        <svg class="w-6 h-6" viewBox="0 0 48 48"><path fill="#4285F4" d="M24 9.5c3.14 0 5.5 1.36 7.27 3.02l5.66-5.66C33.05 3.16 29.05 1 24 1 14.7 1 7.1 6.84 4.13 14.87l6.53 5.03C12.2 14.47 17.58 9.5 24 9.5z"></path><path fill="#34A853" d="M46.14 24.5c0-1.63-.15-3.2-.42-4.68H24v8.88h12.44c-.54 2.87-2.1 5.33-4.6 7.02l6.5 5.01c3.8-3.5 6.08-8.67 6.08-14.23z"></path><path fill="#FBBC05" d="M10.66 29.9c-.6-1.8-.94-3.73-.94-5.74s.34-3.94.94-5.74l-6.53-5.03C1.55 17.13 0 20.8 0 24.16c0 3.36 1.55 7.03 4.13 9.89l6.53-5.15z"></path><path fill="#EA4335" d="M24 47c5.05 0 9.05-1.66 11.9-4.5l-6.5-5.01c-1.67 1.12-3.8 1.78-6.4 1.78-6.42 0-11.8-4.97-13.34-11.6H4.13C7.1 39.16 14.7 47 24 47z"></path><path fill="none" d="M0 0h48v48H0z"></path></svg>
+                        เข้าสู่ระบบด้วย Google
+                    </button>
+                    <button onclick="showView('verification-view')" class="w-full bg-green-600 text-white font-bold py-3 px-6 rounded-lg hover:bg-green-700 transition duration-300">
+                        ลงทะเบียนด้วยบัตรประชาชน
+                    </button>
+                </div>
             </div>
         </div>
 
@@ -327,8 +332,7 @@
 
         verificationForm.addEventListener('submit', async (e) => {
             e.preventDefault();
-            if (!currentUser) return;
-
+            
             const fullName = document.getElementById('full-name').value;
             const nationalId = document.getElementById('national-id').value;
 
@@ -336,13 +340,21 @@
                 alert('กรุณากรอกเลขบัตรประชาชน 13 หลักให้ถูกต้อง');
                 return;
             }
+            
+            // For users who logged in with Google first
+            const userToVerify = currentUser || auth.currentUser;
+            if (!userToVerify) {
+                 alert('เกิดข้อผิดพลาด: ไม่พบข้อมูลผู้ใช้ กรุณาลองเข้าสู่ระบบใหม่อีกครั้ง');
+                 logout();
+                 return;
+            }
 
-            const userDocRef = doc(db, "users", currentUser.uid);
+            const userDocRef = doc(db, "users", userToVerify.uid);
             try {
                 await setDoc(userDocRef, {
-                    uid: currentUser.uid,
+                    uid: userToVerify.uid,
                     displayName: fullName,
-                    email: currentUser.email,
+                    email: userToVerify.email, // Can be null if not from Google
                     role: 'farmer', // Default role
                     nationalID: nationalId,
                     verifiedAt: serverTimestamp()
