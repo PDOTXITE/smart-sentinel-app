@@ -56,8 +56,8 @@
                 <h2 class="text-2xl font-bold text-center text-gray-800 mb-6">เข้าสู่ระบบ</h2>
                 <form id="login-form">
                     <div class="mb-4">
-                        <label for="national-id" class="block text-gray-700 font-semibold mb-2">เลขบัตรประชาชน 13 หลัก:</label>
-                        <input type="text" id="national-id" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500" placeholder="xxxxxxxxxxxxx" maxlength="13" required>
+                        <label for="email" class="block text-gray-700 font-semibold mb-2">อีเมล:</label>
+                        <input type="email" id="email" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500" placeholder="your-email@example.com" required>
                     </div>
                     <div class="mb-4">
                         <label for="password" class="block text-gray-700 font-semibold mb-2">รหัสผ่าน:</label>
@@ -183,14 +183,14 @@
             const q = query(collection(db, "questions"), where("askedBy", "==", currentUser.uid), orderBy("timestamp", "desc"));
             questionsUnsubscribe = onSnapshot(q, (querySnapshot) => {
                 renderFarmerQuestions(querySnapshot.docs);
-            }, error => console.error("Error listening for farmer questions:", error));
+            });
         }
 
         function listenForExpertQuestions() {
             const q = query(collection(db, "questions"), where("answered", "==", false), orderBy("timestamp", "asc"));
             questionsUnsubscribe = onSnapshot(q, (querySnapshot) => {
                 renderExpertQuestions(querySnapshot.docs);
-            }, error => console.error("Error listening for expert questions:", error));
+            });
         }
 
         function renderFarmerQuestions(docs) {
@@ -242,8 +242,8 @@
                     <p class="text-sm text-gray-500">ส่งเมื่อ: ${q.timestamp ? q.timestamp.toDate().toLocaleString('th-TH') : 'กำลังส่ง...'}</p>
                     <p class="mt-2 text-gray-700 whitespace-pre-wrap">${q.details}</p>
                     <div class="mt-4">
-                        <textarea id="answer-${doc.id}" rows="3" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="พิมพ์คำตอบที่นี่..."></textarea>
-                        <button onclick="window.submitAnswer('${doc.id}')" class="mt-2 w-full bg-blue-600 text-white font-bold py-2 px-4 rounded-lg hover:bg-blue-700 transition duration-300">ส่งคำตอบ</button>
+                        <textarea id="answer-${doc.id}" rows="3" class="w-full px-3 py-2 border border-gray-300 rounded-lg" placeholder="พิมพ์คำตอบที่นี่..."></textarea>
+                        <button onclick="window.submitAnswer('${doc.id}')" class="mt-2 w-full bg-blue-600 text-white font-bold py-2 px-4 rounded-lg hover:bg-blue-700">ส่งคำตอบ</button>
                     </div>
                 `;
                 list.appendChild(card);
@@ -274,22 +274,14 @@
 
         loginForm.addEventListener('submit', async (e) => {
             e.preventDefault();
-            const nationalId = document.getElementById('national-id').value;
+            const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
-
-            if (nationalId.length !== 13 || !/^\d+$/.test(nationalId)) {
-                alert('กรุณากรอกเลขบัตรประชาชน 13 หลักให้ถูกต้อง');
-                return;
-            }
-
-            // Convert National ID to email format for Firebase Auth
-            const email = `${nationalId}@smartsentinel.app`;
 
             try {
                 await signInWithEmailAndPassword(auth, email, password);
             } catch (error) {
                 console.error("Login failed:", error);
-                alert("เลขบัตรประชาชนหรือรหัสผ่านไม่ถูกต้อง");
+                alert("อีเมลหรือรหัสผ่านไม่ถูกต้อง");
             }
         });
 
