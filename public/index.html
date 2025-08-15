@@ -50,34 +50,25 @@
             <p class="mt-4 text-gray-600">กำลังตรวจสอบการเข้าสู่ระบบ...</p>
         </div>
 
+        <!-- Login View (Updated) -->
         <div id="login-view" class="view">
             <div class="bg-white p-6 rounded-lg shadow-md max-w-md mx-auto">
-                <h2 class="text-2xl font-bold text-center text-gray-800 mb-6">เข้าสู่ระบบ / ลงทะเบียน</h2>
-                <button onclick="loginWithGoogle()" class="w-full flex items-center justify-center gap-3 bg-white border border-gray-300 text-gray-700 font-semibold py-3 px-6 rounded-lg hover:bg-gray-50 transition duration-300">
-                    <svg class="w-6 h-6" viewBox="0 0 48 48"><path fill="#4285F4" d="M24 9.5c3.14 0 5.5 1.36 7.27 3.02l5.66-5.66C33.05 3.16 29.05 1 24 1 14.7 1 7.1 6.84 4.13 14.87l6.53 5.03C12.2 14.47 17.58 9.5 24 9.5z"></path><path fill="#34A853" d="M46.14 24.5c0-1.63-.15-3.2-.42-4.68H24v8.88h12.44c-.54 2.87-2.1 5.33-4.6 7.02l6.5 5.01c3.8-3.5 6.08-8.67 6.08-14.23z"></path><path fill="#FBBC05" d="M10.66 29.9c-.6-1.8-.94-3.73-.94-5.74s.34-3.94.94-5.74l-6.53-5.03C1.55 17.13 0 20.8 0 24.16c0 3.36 1.55 7.03 4.13 9.89l6.53-5.15z"></path><path fill="#EA4335" d="M24 47c5.05 0 9.05-1.66 11.9-4.5l-6.5-5.01c-1.67 1.12-3.8 1.78-6.4 1.78-6.42 0-11.8-4.97-13.34-11.6H4.13C7.1 39.16 14.7 47 24 47z"></path><path fill="none" d="M0 0h48v48H0z"></path></svg>
-                    เข้าสู่ระบบด้วย Google
-                </button>
-            </div>
-        </div>
-
-        <div id="verification-view" class="view">
-            <div class="bg-white p-6 rounded-lg shadow-md max-w-md mx-auto">
-                <h2 class="text-2xl font-bold text-center text-gray-800 mb-2">ยืนยันตัวตนเกษตรกร</h2>
-                <p class="text-center text-gray-500 mb-6">กรุณากรอกข้อมูลเพิ่มเติมเพื่อใช้งานระบบ</p>
-                <form id="verification-form">
-                    <div class="mb-4">
-                        <label for="full-name" class="block text-gray-700 font-semibold mb-2">ชื่อ-นามสกุล:</label>
-                        <input type="text" id="full-name" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500" required>
-                    </div>
+                <h2 class="text-2xl font-bold text-center text-gray-800 mb-6">เข้าสู่ระบบ</h2>
+                <form id="login-form">
                     <div class="mb-4">
                         <label for="national-id" class="block text-gray-700 font-semibold mb-2">เลขบัตรประชาชน 13 หลัก:</label>
                         <input type="text" id="national-id" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500" placeholder="xxxxxxxxxxxxx" maxlength="13" required>
                     </div>
-                    <button type="submit" class="w-full bg-green-600 text-white font-bold py-3 px-6 rounded-lg hover:bg-green-700 transition duration-300">ยืนยันและเริ่มใช้งาน</button>
+                    <div class="mb-4">
+                        <label for="password" class="block text-gray-700 font-semibold mb-2">รหัสผ่าน:</label>
+                        <input type="password" id="password" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500" required>
+                    </div>
+                    <button type="submit" class="w-full bg-green-600 text-white font-bold py-3 px-6 rounded-lg hover:bg-green-700 transition duration-300">เข้าสู่ระบบ</button>
                 </form>
             </div>
         </div>
 
+        <!-- Farmer View -->
         <div id="farmer-view" class="view">
             <div class="bg-white p-6 rounded-lg shadow-md">
                 <h2 class="text-2xl font-bold text-gray-800 mb-4 border-b pb-2">ส่งคำถามถึงผู้เชี่ยวชาญ</h2>
@@ -90,7 +81,6 @@
                         <label for="question-details" class="block text-gray-700 font-semibold mb-2">รายละเอียดคำถาม:</label>
                         <textarea id="question-details" rows="4" class="w-full px-3 py-2 border border-gray-300 rounded-lg" required></textarea>
                     </div>
-                    <!-- Image Upload Section Removed -->
                     <button type="submit" id="submit-button" class="w-full bg-green-600 text-white font-bold py-3 px-6 rounded-lg hover:bg-green-700 transition duration-300 flex items-center justify-center">ส่งคำถาม</button>
                 </form>
             </div>
@@ -100,6 +90,7 @@
             </div>
         </div>
 
+        <!-- Expert View -->
         <div id="expert-view" class="view">
             <h2 class="text-2xl font-bold text-gray-800 mb-4">คำถามที่รอคำตอบ</h2>
             <div id="expert-questions-list" class="space-y-4"></div>
@@ -109,10 +100,8 @@
     <!-- Firebase SDK -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-        import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-        import { getFirestore, doc, getDoc, setDoc, collection, addDoc, query, where, onSnapshot, serverTimestamp, orderBy, updateDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-        // Storage is no longer needed for this version
-        // import { getStorage, ref, uploadBytes, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-storage.js";
+        import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+        import { getFirestore, doc, getDoc, collection, addDoc, query, where, onSnapshot, serverTimestamp, orderBy, updateDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyDJo5x4ywio0BLGXE058P9VvdjgBBBin3c",
@@ -127,7 +116,6 @@
         const app = initializeApp(firebaseConfig);
         const auth = getAuth(app);
         const db = getFirestore(app);
-        // const storage = getStorage(app); // No longer needed
 
         const allViews = document.querySelectorAll('.view');
         const userInfoDiv = document.getElementById('user-info');
@@ -135,7 +123,7 @@
         const headerSubtitle = document.getElementById('header-subtitle');
         const questionForm = document.getElementById('question-form');
         const submitButton = document.getElementById('submit-button');
-        const verificationForm = document.getElementById('verification-form');
+        const loginForm = document.getElementById('login-form');
         
         let currentUser = null;
         let questionsUnsubscribe = null;
@@ -144,16 +132,6 @@
             allViews.forEach(v => v.classList.remove('active'));
             document.getElementById(viewId)?.classList.add('active');
         }
-
-        window.loginWithGoogle = async () => {
-            const provider = new GoogleAuthProvider();
-            try {
-                await signInWithPopup(auth, provider);
-            } catch (error) {
-                console.error("Error signing in with Google", error);
-                alert("เกิดข้อผิดพลาดในการเข้าสู่ระบบ: " + error.message);
-            }
-        };
 
         window.logout = async () => {
             await signOut(auth);
@@ -165,12 +143,12 @@
                 const userDocRef = doc(db, "users", user.uid);
                 const userDocSnap = await getDoc(userDocRef);
 
-                if (!userDocSnap.exists() || !userDocSnap.data().nationalID) {
-                    document.getElementById('full-name').value = user.displayName || '';
-                    showView('verification-view');
-                } else {
+                if (userDocSnap.exists()) {
                     const userData = userDocSnap.data();
                     onLoginSuccess(userData.displayName, userData.role);
+                } else {
+                    console.error("User document not found in Firestore!");
+                    logout();
                 }
             } else {
                 currentUser = null;
@@ -294,38 +272,24 @@
             }
         };
 
-        verificationForm.addEventListener('submit', async (e) => {
+        loginForm.addEventListener('submit', async (e) => {
             e.preventDefault();
-            const userToVerify = currentUser || auth.currentUser;
-            if (!userToVerify) {
-                 alert('เกิดข้อผิดพลาด: ไม่พบข้อมูลผู้ใช้ กรุณาลองเข้าสู่ระบบใหม่อีกครั้ง');
-                 logout();
-                 return;
-            }
-
-            const fullName = document.getElementById('full-name').value;
             const nationalId = document.getElementById('national-id').value;
+            const password = document.getElementById('password').value;
 
             if (nationalId.length !== 13 || !/^\d+$/.test(nationalId)) {
                 alert('กรุณากรอกเลขบัตรประชาชน 13 หลักให้ถูกต้อง');
                 return;
             }
-            
-            const userDocRef = doc(db, "users", userToVerify.uid);
-            try {
-                await setDoc(userDocRef, {
-                    uid: userToVerify.uid,
-                    displayName: fullName,
-                    email: userToVerify.email,
-                    role: 'farmer',
-                    nationalID: nationalId,
-                    verifiedAt: serverTimestamp()
-                }, { merge: true });
 
-                onLoginSuccess(fullName, 'farmer');
+            // Convert National ID to email format for Firebase Auth
+            const email = `${nationalId}@smartsentinel.app`;
+
+            try {
+                await signInWithEmailAndPassword(auth, email, password);
             } catch (error) {
-                console.error("Error saving verification data:", error);
-                alert("เกิดข้อผิดพลาดในการบันทึกข้อมูล");
+                console.error("Login failed:", error);
+                alert("เลขบัตรประชาชนหรือรหัสผ่านไม่ถูกต้อง");
             }
         });
 
@@ -343,15 +307,13 @@
                 await addDoc(collection(db, "questions"), {
                     title: title,
                     details: details,
-                    imageUrl: null, // No image upload++
+                    imageUrl: null,
                     askedBy: currentUser.uid,
                     timestamp: serverTimestamp(),
                     answered: false,
                     answer: {}
                 });
-
                 questionForm.reset();
-
             } catch (error) {
                 console.error("Error submitting question:", error);
                 alert("เกิดข้อผิดพลาดในการส่งคำถาม");
